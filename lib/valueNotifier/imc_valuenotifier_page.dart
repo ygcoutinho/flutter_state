@@ -33,7 +33,7 @@ class _ImcValueNotifierPageState extends State<ImcValueNotifierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SetState'),
+        title: const Text('Value Notifier'),
       ),
       body: SingleChildScrollView(
         child: Padding(
