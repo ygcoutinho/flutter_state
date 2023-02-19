@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state/widgets/imc_gauge.dart';
 import 'package:intl/intl.dart';
 
-class Template extends StatefulWidget {
-  const Template({Key? key}) : super(key: key);
+class ImcValueNotifierPage extends StatefulWidget {
+  const ImcValueNotifierPage({Key? key}) : super(key: key);
 
   @override
-  State<Template> createState() => _TemplateState();
+  State<ImcValueNotifierPage> createState() => _ImcValueNotifierPageState();
 }
 
-class _TemplateState extends State<Template> {
+class _ImcValueNotifierPageState extends State<ImcValueNotifierPage> {
   final pesoEC = TextEditingController();
   final alturaEC = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  var _imc = 0.0;
+  final _imc = ValueNotifier(0.0);
 
   @override
   void dispose() {
@@ -26,9 +26,7 @@ class _TemplateState extends State<Template> {
   }
 
   void _calcularIMC(double altura, double peso) {
-    setState(() {
-      _imc = peso / pow(altura, 2);
-    });
+    _imc.value = peso / pow(altura, 2);
   }
 
   @override
@@ -42,7 +40,12 @@ class _TemplateState extends State<Template> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              ImcGauge(imc: _imc),
+              ValueListenableBuilder(
+                valueListenable: _imc,
+                builder: (_, value, __) {
+                  return ImcGauge(imc: value);
+                },
+              ),
               const SizedBox(height: 20),
               Form(
                 key: formKey,
